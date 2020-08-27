@@ -197,8 +197,7 @@
    @SpringBootApplication
    public class DependencyInjectionApplication { 
    	public static void main(String[] args) { 
-       	ApplicationContext context = SpringApplication
-               			.run(DependencyInjectionApplication.class, args);
+       	ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
        }
    }
    ~~~
@@ -438,8 +437,7 @@
     @SpringBootApplication
     public class DependencyInjectionApplication { 
         public static void main(String[] args) {
-            ApplicationContext context = SpringApplication
-                					   .run(DependencyInjectionApplication.class, args);
+            ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
             
           	System.out.println("-- property injected dependency");
             // getBean of the controller
@@ -482,7 +480,7 @@
             
     	   SetterInjectedController sController = (SetterInjectedController) context.getBean("setterInjectedController");
             
-    			System.out.println(sController.getGreeting());
+    	   System.out.println(sController.getGreeting());
         }
     }
     ~~~
@@ -516,11 +514,11 @@
     public class DependencyInjectionApplication { 
         public static void main(String[] args) {
             
-            ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
+          ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
     
-            System.out.println("----constructor injected dependency");
-    		ConstructorInjectedController cController (ConstructorInjectedController) context.getBean("constructorInjectedController");
-    		System.out.println(cController.getGreeting());
+           System.out.println("----constructor injected dependency");
+    	   ConstructorInjectedController cController (ConstructorInjectedController) context.getBean("constructorInjectedController");
+    	   System.out.println(cController.getGreeting());
         }
     }
     ~~~
