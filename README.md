@@ -148,10 +148,9 @@
     	public static void main(String[] args) { 
             
             // obtaining application context reference
-        	ApplicationContext context = SpringApplication
-                						.run(DependencyInjectionApplication.class, args);
+        	ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
             
-            // accessing bean and try to give two different bean of computer class to the two 				different computer reference
+            // accessing bean and try to give two different bean of computer class to the two different computer reference
             Computer myComp = (Computer) context.getBean("computer");
             Computer myComp1 = (Computer) context.getBean("computer");
         }
@@ -200,7 +199,7 @@
    public class DependencyInjectionApplication { 
    	public static void main(String[] args) { 
        	ApplicationContext context = SpringApplication
-               					.run(DependencyInjectionApplication.class, args);
+               			.run(DependencyInjectionApplication.class, args);
        }
    }
    ~~~
@@ -480,7 +479,7 @@
         public static void main(String[] args) {
             
             ApplicationContext context = SpringApplication
-                					   .run(DependencyInjectionApplication.class, args);
+                			.run(DependencyInjectionApplication.class, args);
             
            		System.out.println("-- setter injected dependency");
             
@@ -521,7 +520,7 @@
         public static void main(String[] args) {
             
             ApplicationContext context = SpringApplication
-                					   .run(DependencyInjectionApplication.class, args);
+                		.run(DependencyInjectionApplication.class, args);
     
             System.out.println("----constructor injected dependency");
     		ConstructorInjectedController cController = (ConstructorInjectedController) 												context.getBean("constructorInjectedController");
