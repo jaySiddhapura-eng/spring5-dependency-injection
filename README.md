@@ -71,8 +71,7 @@
     ~~~java
     @SpringBootApplication
     public class DependencyInjectionApplication {
-        ApplicationContext context = SpringApplication
-            					   .run(DependencyInjectionApplication.class, args);
+        ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
         
         Computer myComp = (Computer) context.getBean("computer");
         myComp.computerMethod();
@@ -216,8 +215,7 @@
    	public static void main(String[] args) { 
            
            // obtaining the reference of the spring context
-       	ApplicationContext context = SpringApplication
-               			.run(DependencyInjectionApplication.class, args);
+       	ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
            
            // bean of cycle class constructed
            Cycle myCycle = (Cycle) context.getBean("cycle");	
@@ -445,7 +443,7 @@
             
           	System.out.println("-- property injected dependency");
             // getBean of the controller
-    	    PropertyInjectedController pController = (PropertyInjectedController) 													context.getBean("propertyInjectedController");
+    	    PropertyInjectedController pController = (PropertyInjectedController) context.getBean("propertyInjectedController");
             // using the method of controller
     		System.out.println(pController.getGreeting());
         }
@@ -478,12 +476,11 @@
     public class DependencyInjectionApplication { 
         public static void main(String[] args) {
             
-            ApplicationContext context = SpringApplication
-                			.run(DependencyInjectionApplication.class, args);
+            ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
             
-           		System.out.println("-- setter injected dependency");
+            System.out.println("-- setter injected dependency");
             
-    	    	SetterInjectedController sController = (SetterInjectedController) 																context.getBean("setterInjectedController");
+    	   SetterInjectedController sController = (SetterInjectedController) context.getBean("setterInjectedController");
             
     			System.out.println(sController.getGreeting());
         }
@@ -519,11 +516,10 @@
     public class DependencyInjectionApplication { 
         public static void main(String[] args) {
             
-            ApplicationContext context = SpringApplication
-                		.run(DependencyInjectionApplication.class, args);
+            ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
     
             System.out.println("----constructor injected dependency");
-    		ConstructorInjectedController cController = (ConstructorInjectedController) 												context.getBean("constructorInjectedController");
+    		ConstructorInjectedController cController (ConstructorInjectedController) context.getBean("constructorInjectedController");
     		System.out.println(cController.getGreeting());
         }
     }
