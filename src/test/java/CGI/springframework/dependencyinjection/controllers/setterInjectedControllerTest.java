@@ -1,6 +1,6 @@
 package CGI.springframework.dependencyinjection.controllers;
 
-import CGI.springframework.dependencyinjection.services.GreetingServiceImpl;
+import CGI.springframework.dependencyinjection.services.SetterInjectedService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ class setterInjectedControllerTest {
     @BeforeEach
     void setUp() {
         controller = new SetterInjectedController(); // create the controller instance
-        controller.setGreetingService(new GreetingServiceImpl());   // then access the setter method to provide service instance
+        controller.setGreetingService(new SetterInjectedService());   // then access the setter method to provide service instance
     }
 
     @Test

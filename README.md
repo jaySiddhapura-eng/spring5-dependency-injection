@@ -523,5 +523,207 @@
     }
     ~~~
 
+
+## Qualifier for Dependency Injection
+
+1. So far we had just one implementation ```greetingServiceImpl``` for the service Interface ```greetingService```
+
+2. Diagram explaining above statement
+
+   ![withoutQualifier](assets/InjectionWithoutQualifier.PNG)
+
+3. But in realistic scenario it is highly probable that there are multiple Implementation of the single service interface
+
+4. And these different implementations are injected in different controllers 
+
+5. In order to inject correct service implementation in the correct controller, spring facilitate us the ```@Qualifier``` annotation
+
+6. Diagram explaining above discussion
+
+   ![InjectionWithQualifier](assets/InjectionWithQualifier.PNG)
+
+7. ```@Qualifier``` annotation works with all 3 types of injections(property, setter, constructor)
+
+8. Basic syntax for qualifier ```@Qualifier("lowerCaseNameOfInjectedService")```
+
+9. Consider there are 3 implementation of the ```GreetingService``` named as
+
+   1. ```PropertyInjectedService``` in diagram [service implementation 1]
+   2. ```SetterInjectedService``` in diagram [service implementation 2] 
+   3. ```ConstructorInjectedService``` in diagram [service implementation 3]
+
+10. Above mentioned service implementation injected to the three controller named as
+
+    1. ```PropertyInjectedController``` in diagram [controller 1]
+    2. ```SetterInjectedController``` in diagram [controller 2]
+    3. ```ConstructorInjectedController``` in diagram [controller 3]
+
+11. Three services are implemented as follow
+
+12. ```PorpertyInjectedService```
+
+    ~~~java
+    @Service
+    public class PropertyInjectedService implements GreetingService{
+    
+        @Override
+        public String sayGreeting() {
+            return "Property injected service";
+        }
+    }
+    ~~~
+
+13. ```SetterInjectedController```
+
+    ~~~java
+    @Service
+    public class SetterInjectedService implements GreetingService {
+        @Override
+        public String sayGreeting() {
+            return "Setter injected greeting service";
+        }
+    }
+    ~~~
+
+14. ```ConstructorInjectedService```
+
+    ~~~java
+    @Service
+    public class ConstructorInjectedService implements GreetingService {
+        @Override
+        public String sayGreeting() {
+            return "Constructor Injected Service";
+        }
+    }
+    ~~~
+
+15. Qualifier annotation is being used to specify which exact service we want for that controller
+
+16. In ```PropertyInjectedController```  we want to inject ```PorpertyInjectedService```
+
+    ~~~java
+    @Controller
+    public class PropertyInjectedController {
+    
+        // specifying needed service using qualifier on property
+        @Qualifier("propertyInjectedService")
+        @Autowired
+        public GreetingService greetingService;
+    
+        public String getGreeting(){
+            return greetingService.sayGreeting();
+        }
+    }
+    ~~~
+
+17. In ```SetterInjectedController``` we want to inject ```SetterInjectedService```
+
+    ~~~java
+    @Controller
+    public class SetterInjectedController {
+        private GreetingService greetingService;
+    
+        // qualifier in the set method
+        @Autowired
+        public void setGreetingService(
+                @Qualifier("setterInjectedService") GreetingService greetingService)
+        {
+            this.greetingService = greetingService;
+        }
+    
+        public String getGreeting(){
+            return greetingService.sayGreeting();
+        }
+    }
+    ~~~
+
+18. In ```ConstructorInjectedController``` we want to inject ```ConstructorInjectedService```
+
+    ~~~java
+    @Controller
+    public class ConstructorInjectedController {
+        
+        private final GreetingService greetingService;
+        
+        @Autowired
+        public ConstructorInjectedController(
+                @Qualifier("constructorInjectedService")GreetingService greetingService)
+        {
+            this.greetingService = greetingService;
+        }
+    
+        public String getGreeting(){
+            return greetingService.sayGreeting();
+        }
+    }
+    ~~~
+
+## Primary Dependency
+
+1. Spring provide a way of selecting the dependency, if there are multiple number of implementation of it
+
+2. In previous section we have seen how one can select and inject the specific dependency by using ```@Qualifier```
+
+3. Spring also provide the facility to make one of the implementation to be **Primary**
+
+4. In previous section we used ```@Qualifier``` to inform spring about which specific implementation we need
+
+5. If we do not provide any qualifier for the dependency injection in the controller, then spring will give us error, because spring do not know which implementation is needed to inject. 
+
+6. To avoid such error, spring allow us to make one of the implementation a primary implementation
+
+7. So when some controller needs the dependency and does not specified the qualifier, spring will scan the implementation which has ```@Primary``` annotation and automatically inject that implementation in the controller 
+
+   ![Primary](assets/PrimaryServiceInjection.PNG)
+
+8. Make a Primary service implementation
+
+   ~~~java
+   @Primary
+   @Service
+   public class PrimaryService implements GreetingService{
+       @Override
+       public String sayGreeting() {
+           return "from primary service ";
+       }
+   }
+   ~~~
+
+9. ```@Primary``` annotation is used to declare the service implementation to be Primary
+
+10. Access the primary service implementation controller named ```MyController```
+
+    ~~~java
+    @Controller
+    public class MyController {
+    
+        private GreetingService greetingService;
+    
+        // no @Qualifier is used to select the specific service implementation
+        @Autowired
+        public MyController(GreetingService greetingService) {
+            this.greetingService = greetingService;
+        }
+    
+        public String sayHi(){
+            return this.greetingService.sayGreeting();
+        }
+    }
+    ~~~
+
+11. Since above implemented controller does not have ```@Qualifier``` annotation in dependency injection, Spring will automatically inject the primary implementation in the controller
+
+12. Output:
+
+    ~~~java
+    2020-08-28 17:44:10.851  INFO 13920 --- [           main] C.s.d.DependencyInjectionApplication     : Started DependencyInjectionApplication in 2.234 seconds (JVM running for 3.031)
+    from primary service 
+    ~~~
+
     
 
+    
+
+    
+
+    

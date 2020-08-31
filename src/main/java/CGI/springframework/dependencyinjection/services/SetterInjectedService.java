@@ -3,9 +3,9 @@ package CGI.springframework.dependencyinjection.services;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GreetingServiceImpl implements GreetingService {
+public class SetterInjectedService implements GreetingService {
     @Override
     public String sayGreeting() {
-        return "greeting service hello";
+        return "Setter injected greeting service";
     }
 }

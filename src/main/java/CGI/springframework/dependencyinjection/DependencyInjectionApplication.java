@@ -19,7 +19,7 @@ public class DependencyInjectionApplication {
 		ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
 
 		MyController myController = (MyController) context.getBean("myController");
-		myController.sayHi();
+		System.out.println(myController.sayHi());
 
 		// give me the computer object/bean [singleton bean]
 		Computer myComp = (Computer) context.getBean("computer");		// this will give constructor string
