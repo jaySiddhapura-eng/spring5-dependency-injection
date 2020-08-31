@@ -746,14 +746,19 @@
 
 10. Both the implementations have ```@Override``` the method of ```GreetingService``` interface
 
-11.  This two implementation belong to two different profiles
+11. This two implementation belong to two different profiles
+
+    1. implementation 1 : ```@Profile("EN")```
+    2. implementation 2 : ```@Profile("ES")```
+
+12.  This two implementation belong to two different profiles
 
     1. implementation 1 : @Profile("EN")
     2. implementation 2 : @Profile("ES")
 
-12. Although both implementation have same qualifier names ```@Service("i18nService")```
+13. Although both implementation have same qualifier names ```@Service("i18nService")```
 
-13. English greeting service
+14. English greeting service
 
     ~~~java
     @Profile("EN")
@@ -766,7 +771,7 @@
     }
     ~~~
 
-14. Spanish greeting service
+15. Spanish greeting service
 
     ~~~java
     @Profile("ES")
@@ -779,7 +784,7 @@
     }
     ~~~
 
-15. The Dependency is injected in the controller ```I18nController```
+16. The Dependency is injected in the controller ```I18nController```
 
     ~~~java
     @Controller
@@ -797,9 +802,9 @@
     }
     ~~~
 
-16. Now If we run the application, it will results into error. Because spring received two implementation for qualifier name ```i18nService```, and spring did not receive any information about qualifier. Which results into conflict
+17. Now If we run the application, it will results into error. Because spring received two implementation for qualifier name ```i18nService```, and spring did not receive any information about qualifier. Which results into conflict
 
-17. Provide active profile in ```application.properties``` file
+18. Provide active profile in ```application.properties``` file
 
     ~~~java
     spring.profiles.active=ES	// spring will consider implementation 2
@@ -807,9 +812,9 @@
     spring.profiles.active=EN   // spring will consider implementation 1
     ~~~
 
-18. According to the active profile spring will consider either implementation 1 or implementation 2
+19. According to the active profile spring will consider either implementation 1 or implementation 2
 
-19. Access the newly created controller in the main application class
+20. Access the newly created controller in the main application class
 
     ~~~java
     @SpringBootApplication
@@ -822,7 +827,7 @@
     }
     ~~~
 
-20. Output:
+21. Output:
 
     ~~~java
     // if spring.profiles.active=ES	
