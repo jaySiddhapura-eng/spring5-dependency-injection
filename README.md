@@ -716,7 +716,6 @@
 12. Output:
 
     ~~~java
-    2020-08-28 17:44:10.851  INFO 13920 --- [           main] C.s.d.DependencyInjectionApplication     : Started DependencyInjectionApplication in 2.234 seconds (JVM running for 3.031)
     from primary service 
     ~~~
 
@@ -738,7 +737,7 @@
 
 8. This interchanging of the component according to the development phases of the application can be achieved by creating different profiles in application
 
-   <img src="assets/profile.PNG" alt="profile" style="zoom: 50%;" />
+   ![profile](assets/profile.PNG)
 
 9. Consider again a ```GreetingService``` interface, now it has two different implementations 
 
