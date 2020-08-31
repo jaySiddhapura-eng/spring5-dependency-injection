@@ -748,8 +748,8 @@
 
 11.  This two implementation belong to two different profiles
 
-    1. implementation 1 : ```@Profile("EN")```
-    2. implementation 2 : ```@Profile("ES")```
+    1. implementation 1 : @Profile("EN")
+    2. implementation 2 : @Profile("ES")
 
 12. Although both implementation have same qualifier names ```@Service("i18nService")```
 
