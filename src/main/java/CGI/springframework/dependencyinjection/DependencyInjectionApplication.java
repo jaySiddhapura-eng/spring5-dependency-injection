@@ -3,10 +3,7 @@ package CGI.springframework.dependencyinjection;
 import CGI.springframework.dependencyinjection.component.Computer;
 import CGI.springframework.dependencyinjection.component.Cycle;
 import CGI.springframework.dependencyinjection.component.Electronics;
-import CGI.springframework.dependencyinjection.controllers.ConstructorInjectedController;
-import CGI.springframework.dependencyinjection.controllers.MyController;
-import CGI.springframework.dependencyinjection.controllers.PropertyInjectedController;
-import CGI.springframework.dependencyinjection.controllers.SetterInjectedController;
+import CGI.springframework.dependencyinjection.controllers.*;
 import org.springframework.aop.interceptor.ConcurrencyThrottleInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +14,9 @@ public class DependencyInjectionApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
+
+		I18nController i18nController = (I18nController) context.getBean("i18nController");
+		System.out.println(i18nController.greeting());
 
 		MyController myController = (MyController) context.getBean("myController");
 		System.out.println(myController.sayHi());

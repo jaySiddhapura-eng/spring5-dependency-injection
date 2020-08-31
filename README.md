@@ -720,10 +720,126 @@
     from primary service 
     ~~~
 
+## Spring Profile
+
+1. Basically It is a configuration of spring application for different development stages
+
+2. Profile allow you to control your spring application in different runtime environment
+
+3. Sometimes we need certain spring components during development phase, and sometime during production phase we uses different components as a substitute
+
+4. So to inform spring, which component to be included and which component to be excluded for particular development phase, profiles are being used
+
+5. ```@Profile``` annotation is applied on the components
+
+6. This profile can be activated or deactivated from the ```application.property``` file
+
+7. Example: During development phase of spring app, a beans which are used has relation with H2 in-memory database, but during production phase these beans are replaced by another beans with same functionality but this new beans has relation with MySQL database. 
+
+8. This interchanging of the component according to the development phases of the application can be achieved by creating different profiles in application
+
+   <img src="assets/profile.PNG" alt="profile" style="zoom: 50%;" />
+
+9. Consider again a ```GreetingService``` interface, now it has two different implementations 
+
+   1. implementation 1 : ```I18nEnglishGreetingService```
+   2. implementation 2 : ```I18SpanishGreetingService```
+
+10. Both the implementations have ```@Override``` the method of ```GreetingService``` interface
+
+11.  This two implementation belong to two different profiles
+
+    1. implementation 1 : ```@Profile("EN")```
+    2. implementation 2 : ```@Profile("ES")```
+
+12. Although both implementation have same qualifier names ```@Service("i18nService")```
+
+13. English greeting service
+
+    ~~~java
+    @Profile("EN")
+    @Service("i18nService")
+    public class I18nEnglishGreetingService implements GreetingService {
+        @Override
+        public String sayGreeting() {
+            return "greeting is English" ;
+        }
+    }
+    ~~~
+
+14. Spanish greeting service
+
+    ~~~java
+    @Profile("ES")
+    @Service("i18nService")
+    public class I18nSpanishGreetingService implements GreetingService{
+        @Override
+        public String sayGreeting() {
+            return "greetings in spanish";
+        }
+    }
+    ~~~
+
+15. The Dependency is injected in the controller ```I18nController```
+
+    ~~~java
+    @Controller
+    public class I18nController {
+         private final GreetingService greetingService;
     
+        // notice the qualifier
+        public I18nController(@Qualifier("i18nService") GreetingService greetingService) {
+            this.greetingService = greetingService;
+        }
+    
+        public String greeting(){
+            return this.greetingService.sayGreeting();
+        }
+    }
+    ~~~
+
+16. Now If we run the application, it will results into error. Because spring received two implementation for qualifier name ```i18nService```, and spring did not receive any information about qualifier. Which results into conflict
+
+17. Provide active profile in ```application.properties``` file
+
+    ~~~java
+    spring.profiles.active=ES	// spring will consider implementation 2
+        // or 
+    spring.profiles.active=EN   // spring will consider implementation 1
+    ~~~
+
+18. According to the active profile spring will consider either implementation 1 or implementation 2
+
+19. Access the newly created controller in the main application class
+
+    ~~~java
+    @SpringBootApplication
+    public class DependencyInjectionApplication { 
+        public static void main(String[] args) { 
+            ApplicationContext context = SpringApplication.run(DependencyInjectionApplication.class, args);
+            I18nController i18nController = (I18nController) context.getBean("i18nController");
+    		System.out.println(i18nController.greeting());
+        }
+    }
+    ~~~
+
+20. Output:
+
+    ~~~java
+    // if spring.profiles.active=ES	
+    greetings in spanish
+        
+    // if spring.profiles.active=EN
+    greeting is English    
+    ~~~
 
     
 
-    
 
-    
+
+
+
+
+
+
+
