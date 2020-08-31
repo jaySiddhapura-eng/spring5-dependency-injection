@@ -832,7 +832,19 @@
     greeting is English    
     ~~~
 
-    
+21. Default Profile can be given any of the above mentioned implementation, so when the active profile is not provided in ```application.properties``` file, spring will take the default one and does not result into any error
+
+22. Make English greeting service a default profile
+
+    ~~~java
+    @Profile({"EN", "default"})
+    @Service("i18nService")
+    public class I18nEnglishGreetingService implements GreetingService {
+        ...
+    }
+    ~~~
+
+23. Now when there is not active profile mentioned in the ```application.properties```, spring will inject the English greeting service, because it has default profile
 
 
 
