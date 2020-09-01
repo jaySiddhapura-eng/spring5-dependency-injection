@@ -976,11 +976,138 @@
 
 ## Dependency Inversion 
 
-1. 
+![inversion](assets/dependencyInversion.PNG)
 
-2. s
+1. A high level module should not depend on low level modules, both should depend on abstraction
 
-   ![inversion](assets/dependencyInversion.PNG)
+2. Abstractions should not depend on details, details should depends on abstractions
+
+3. **Bad Practice**
+
+4. ```LightBulb.java```
+
+   ~~~java
+   public class LightBulb {
+       public void turnOn() {
+           System.out.println("LightBulb: Bulb turned on...");
+       }
+       public void turnOff() {
+           System.out.println("LightBulb: Bulb turned off...");
+       }
+   }
+   ~~~
+
+5. ```ElectricPowerSwitch.java```
+
+   ~~~java
+   public class ElectricPowerSwitch {
+       public LightBulb lightBulb;
+       public boolean on;
+       public ElectricPowerSwitch(LightBulb lightBulb) {
+           this.lightBulb = lightBulb;
+           this.on = false;
+       }
+       public boolean isOn() {
+           return this.on;
+       }
+       public void press(){
+           boolean checkOn = isOn();
+           if (checkOn) {
+               lightBulb.turnOff();
+               this.on = false;
+           } else {
+               lightBulb.turnOn();
+               this.on = true;
+           }
+       }
+   }
+   ~~~
+
+6. We are directly providing the light bulb object to the electric power switch in its constructor
+
+7. **Best practice**
+
+8. ```Switch.java```
+
+   ~~~java
+   public interface Switch {
+       boolean isOn();
+       void press();
+   }
+   ~~~
+
+9. ```Switchable.java```
+
+   ~~~java
+   public interface Switchable {
+       void turnOn();
+       void turnOff();
+   }
+   ~~~
+
+10. ```ElectricPowerSwitch.java```
+
+    ~~~java
+    public class ElectricPowerSwitch implements Switch {
+        public Switchable client;
+        public boolean on;
+        public ElectricPowerSwitch(Switchable client) {
+            this.client = client;
+            this.on = false;
+        }
+        public boolean isOn() {
+            return this.on;
+        }
+       public void press(){
+           boolean checkOn = isOn();
+           if (checkOn) {
+               client.turnOff();
+               this.on = false;
+           } else {
+                 client.turnOn();
+                 this.on = true;
+           }
+       }
+    }
+    ~~~
+
+11. Generalizing the appliances in switchable term, and then using switchable term
+
+12.  ```LightBulb.java``` : implementing lightbulb from switchable interface
+
+    ~~~java
+    import guru.springframework.blog.dependencyinversionprinciple.highlevel.Switchable;
+     
+    public class LightBulb implements Switchable {
+        @Override
+        public void turnOn() {
+            System.out.println("LightBulb: Bulb turned on...");
+        }
+     
+        @Override
+        public void turnOff() {
+            System.out.println("LightBulb: Bulb turned off...");
+        }
+    }
+    ~~~
+
+13. ```Fan.java```
+
+    ~~~java
+    public class Fan implements Switchable {
+        @Override
+        public void turnOn() {
+            System.out.println("Fan: Fan turned on...");
+        }
+     
+        @Override
+        public void turnOff() {
+            System.out.println("Fan: Fan turned off...");
+        }
+    }
+    ~~~
+
+14. Now any appliance which implements switchable interface can be fit into the  ```ElectricPowerSwitch.java``` class 
 
 
 
