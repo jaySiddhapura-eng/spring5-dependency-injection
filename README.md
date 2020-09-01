@@ -846,9 +846,141 @@
 
 23. Now when there is not active profile mentioned in the ```application.properties```, spring will inject the English greeting service, because it has default profile
 
+## Open Close Principle
 
+1. While updating the functionality of an application, Try to avoid modification of same code, instead extend the functionality by using new code. Eg. Instead of deleting the piece of code, add new piece of code which add the new functionality without altering the old one.
 
+2. Open for extension but close for modification 
 
+3. **Bad practice example**
+
+4. ```HealthInsuranceSurveyor.java```
+
+   ~~~java
+   public class HealthInsuranceSurveyor{
+       public boolean isValidClaim(){
+           System.out.println("HealthInsuranceSurveyor: Validating health insurance claim...");
+           /*Logic to validate health insurance claims*/
+           return true;
+       }
+   }
+   ~~~
+
+5. ```ClaimApprovalManager.java```
+
+   ~~~java
+   public class ClaimApprovalManager {
+       public void processHealthClaim (HealthInsuranceSurveyor surveyor)    {
+           if(surveyor.isValidClaim()){
+               System.out.println("ClaimApprovalManager: Valid claim.");
+           }
+       }
+   }
+   ~~~
+
+6. Now we need to include a new vehicleInsuranceSurveyor class, and this should not create any problem. But we also  need is to modify the ClaimApprovalManager class to process vehicle insurance claims
+
+   ~~~javascript
+   public class ClaimApprovalManager {
+       public void processHealthClaim (HealthInsuranceSurveyor surveyor)    {
+           if(surveyor.isValidClaim()){
+               System.out.println("ClaimApprovalManager: Valid claim.");
+           }
+       }
+       public void processVehicleClaim (VehicleInsuranceSurveyor surveyor)    {
+           if(surveyor.isValidClaim()){
+               System.out.println("ClaimApprovalManager: Valid claim. ");
+           }
+       }
+   }
+   ~~~
+
+7. In the example above, we modified the ClaimApprovalManager class by adding a new processVehicleClaim( ) method to incorporate a new functionality (claim approval of vehicle insurance).
+
+8. This is clear violation of open close principle
+
+9. **Best practice example**
+
+10. Introducing layer of abstraction by introducing the abstract class to represent different claim behaviors
+
+11. ```InsuranceSurveyor.java ```
+
+    ~~~java
+    public abstract class InsuranceSurveyor {
+        public abstract boolean isValidClaim();
+    }
+    ~~~
+
+12. ```HealthInsuranceSurveyor.java```
+
+    ~~~java
+    public class HealthInsuranceSurveyor extends InsuranceSurveyor{
+        public boolean isValidClaim(){
+            System.out.println("HealthInsuranceSurveyor: Validating health insurance claim...");
+            /*Logic to validate health insurance claims*/
+            return true;
+        }
+    }
+    ~~~
+
+13. ```VehicleInsuranceSurveyor.java```
+
+    ~~~java
+    public class VehicleInsuranceSurveyor extends InsuranceSurveyor{
+        public boolean isValidClaim(){
+           System.out.println("VehicleInsuranceSurveyor: Validating vehicle insurance claim...");
+            return true;
+        }
+    }
+    ~~~
+
+14. In future if we need other type of Insurance Surveyor, we can simple extend ```InsuranceSurveyor.java ``` Abs. class
+
+15. ```ClaimApprovalManager.java```
+
+    ~~~java
+    public class ClaimApprovalManager {
+        public void processClaim(InsuranceSurveyor surveyor){
+            if(surveyor.isValidClaim()){
+                System.out.println("ClaimApprovalManager: Valid claim.");
+            }
+        }
+    }
+    ~~~
+
+16. ```ClaimApprovalManagerTest.java```
+
+    ~~~java
+    public class ClaimApprovalManagerTest {
+     
+        @Test
+        public void testProcessClaim() throws Exception {
+          HealthInsuranceSurveyor healthInsuranceSurveyor = new HealthInsuranceSurveyor();
+          ClaimApprovalManager claim1 = new ClaimApprovalManager();
+          claim1.processClaim(healthInsuranceSurveyor);
+          VehicleInsuranceSurveyor vehicleInsuranceSurveyor = new VehicleInsuranceSurveyor();
+          ClaimApprovalManager claim2 = new ClaimApprovalManager();
+          claim2.processClaim(vehicleInsuranceSurveyor);
+        }
+    }
+    ~~~
+
+## Interface Segregation
+
+1. Class can implements multiple interfaces :)
+2. Therefore avoid making big and chunky single interface, instead make smaller and cohesive interfaces
+3. When any class implements the interface it must implements all the methods
+4. If you are implementing an interface and you are not implementing all the methods of interface then you interface is poorly designed
+5. While designing an interface, consider the different possible behavior of classes which will implement this interface, and if so segregate the interface into multiple interfaces, each having specific role.
+6. Both the Interface Segregation Principle and Single Responsibility Principle have the same goal: ensuring small, focused, and highly cohesive software components
+
+## Dependency Inversion 
+
+1. 
+
+2. s
+
+   ![inversion](assets/dependencyInversion.PNG)
 
 
 
